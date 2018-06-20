@@ -37,10 +37,7 @@ function init() {
   });
 
   // Если вы хотите задать неизменяемую точку "откуда", раскомментируйте код ниже.
-  /*routePanelControl.routePanel.state.set({
-      fromEnabled: false,
-      from: 'Москва, Льва Толстого 16'
-   });*/
+  /*routePanelControl.routePanel.state.set({fromEnabled: false,from: 'Москва, Льва Толстого 16'});*/
 
   myMap.controls.add(routePanelControl).add(zoomControl);
 
@@ -48,13 +45,9 @@ function init() {
   routePanelControl.routePanel.getRouteAsync().then(function (route) {
 
     // Зададим максимально допустимое число маршрутов, возвращаемых мультимаршрутизатором.
-    route.model.setParams({
-      results: 1
-    }, true);
-
+    route.model.setParams({ results: 1}, true);
     // Повесим обработчик на событие построения маршрута.
     route.model.events.add('requestsuccess', function () {
-
       var activeRoute = route.getActiveRoute();
       if (activeRoute) {
         // Получим протяженность маршрута.
@@ -74,50 +67,37 @@ function init() {
 
         v.durationInTraffic_text = rtedata.durationInTraffic.text;
         v.durationInTraffic_val = rtedata.durationInTraffic.value;
-
-        //getAddress([55.753994, 37.622093])
-
         var length = route.getActiveRoute().properties.get("distance");
         // Вычислим стоимость доставки.
-        var price = calculate(Math.round(length.value / 1000));
-        //v._data.price = price;
+        var price = calculate(Math.round(length.value / 1000)); //v._data.price = price;
         // Создадим макет содержимого балуна маршрута.
         var balloonContentLayout = ymaps.templateLayoutFactory.createClass(
           '<span>Расстояние: ' + length.text + '.</span><br/>' +
           '<span style="font-weight: bold; font-style: italic">Стоимость: ' + price + ' р.</span>');
         // Зададим этот макет для содержимого балуна.
         route.options.set('routeBalloonContentLayout', balloonContentLayout);
-        // Откроем балун.
-        //activeRoute.balloon.open();
-
+        //activeRoute.balloon.open();// Откроем балун.
         v.calculate_cost();
-        getAddress([x1, y1]);
+        getAddress([x1, y1]); //getAddress([55.753994, 37.622093])
         getAddress([x2, y2]);
       }
     });
 
   });
   // Функция, вычисляющая стоимость доставки.
-  function calculate(routeLength) {
-    console.log(routeLength);
-    return Math.max(routeLength * DELIVERY_TARIFF, MINIMUM_COST);
-
-  }
+  function calculate(routeLength) {console.log(routeLength);return Math.max(routeLength * DELIVERY_TARIFF, MINIMUM_COST);  }
 }
 
 
 
 function getAddress(coords) {
-
   ymaps.geocode(coords).then(function (res) {
     firstGeoObject = v._data.firstGeoObject = res.geoObjects.get(0).properties._data.text;
     secontGeoObject = v._data.secontGeoObject = res.geoObjects.get(1).properties._data.text;
     v._data.firstGeoObject = document.querySelectorAll('.ymaps-2-1-64-route-panel-input__input')[0].value
     v._data.secontGeoObject = document.querySelectorAll('.ymaps-2-1-64-route-panel-input__input')[1].value
-
     console.col('firstGeoObject=>', firstGeoObject, 'secontGeoObject=>', secontGeoObject);
   });
-
 }
 
 }

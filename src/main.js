@@ -16,61 +16,125 @@ import App from './Test.vue'
 window.tarifs = [
   {
     id: 0,
-    title: 'ЭКОНОМ (до 3 пасажиров)',
-    icon: './src/1.png',
-    desc: 'Hondai Solaris и подобные',
-    desc_cost: '1 414 р.',
-    mesta: {sitdown: 3,standup: 0},
-    min_cost: 600,
-    deliv_tarif: 30
-  },{
+    title: "Бизнес",
+    icon: "./src/1.png",
+    desc: "Mercedes E-class",
+    mesta: 4,
+    min_cost: 1000, //минималка в рублях
+    deliv_tarif_km: 38, //стоимость 1 км
+    deliv_tarif_mins: 2 //стоимость 1 мин
+  },
+  {
     id: 1,
-    title: 'СТАНДАРТ (до 3 пасажиров)',
-    icon: './src/2.png',
-    desc: 'Scoda Octavia и подобные',
-    desc_cost: '1 995 р.',
-    mesta: {sitdown: 3,standup: 0},
-    min_cost: 600,
-    deliv_tarif: 30
-    },{
-      id: 2,
-      title: 'КОМФОРТ (до 3 пасажиров)',
-      icon: './src/3.png',
-      desc: 'Toyota Camry и подобные',
-      desc_cost: '2 626 р.',
-      mesta: {sitdown: 3,standup: 0},
-      min_cost: 600,
-      deliv_tarif: 30
-    },{
-      id: 3,
-      title: 'БИЗНЕС (до 3 пасажиров)',
-      icon: './src/4.png',
-      desc: 'Mercedes-Benz E-class w212 и подобные',
-      desc_cost: '2 929 р.',
-      mesta: {        sitdown: 3,        standup: 0      },
-      min_cost: 700,
-      deliv_tarif: 25
-    },{
-      id: 4,
-      title: 'МИНИВЭН (до 6 пасажиров)',
-      icon: './src/5.png',
-      desc: 'Wolkswagen Caravelle и подобные',
-      desc_cost: '3 535 р.',
-      mesta: {sitdown: 6,standup: 2},
-      min_cost: 500,
-      deliv_tarif: 31, //стоимость 1 км
-      deliv_tarif_min: 1 //стоимость 1 мин
-    },{
-      id: 5,
-      title: 'МИНИВЭН+ (до 8 пасажиров)',
-      icon: './src/6.png',
-      desc: 'Mercedes-Benz Vito и подобные',
-      desc_cost: '4 495 р.',
-      mesta: {sitdown: 10,standup: 4},
-      min_cost: 600,
-      deliv_tarif: 30
-    }
-  ]
+    title: "Премиум",
+    icon: "./src/2.png",
+    desc: "Mercedes S-class",
+    mesta: 3,
+    min_cost: 4000, //минималка в рублях
+    deliv_tarif_km: 65, //стоимость 1 км
+    deliv_tarif_mins: 3 //стоимость 1 мин
+  },
+  {
+    id: 2,
+    title: "Минивэн",
+    icon: "./src/3.png",
+    desc: "Ford Galaxy",
+    mesta: 8,
+    min_cost: 1000, //минималка в рублях
+    deliv_tarif_km: 36, //стоимость 1 км
+    deliv_tarif_mins: 1 //стоимость 1 мин
+  },
+  {
+    id: 3,
+    title: "Минивэн+",
+    icon: "./src/4.png",
+    desc: "Mercedes-Benz Viano",
+    mesta: 7,
+    min_cost: 2000, //минималка в рублях
+    deliv_tarif_km: 45, //стоимость 1 км
+    deliv_tarif_mins: 3 //стоимость 1 мин
+  },
+  {
+    id: 4,
+    title: "Минивэн Vip",
+    icon: "./src/5.png",
+    desc: "Mercedes-Benz V-class",
+    mesta: 6,
+    min_cost: 5000, //минималка в рублях
+    deliv_tarif_km: 65, //стоимость 1 км
+    deliv_tarif_mins: 4 //стоимость 1 мин
+  },
+  {
+    id: 5,
+    title: "Микроавтобус",
+    icon: "./src/6.png",
+    desc: "Ford Transit",
+    mesta: 15,
+    min_cost: 5000, //минималка в рублях
+    deliv_tarif_km: 53, //стоимость 1 км
+    deliv_tarif_mins: 2 //стоимость 1 мин
+  },
+  {
+    id: 6,
+    title: "Микроавтобус",
+    icon: "./src/6.png",
+    desc: "Mercedes-Benz Sprinter",
+    mesta: 20,
+    min_cost: 5000, //минималка в рублях
+    deliv_tarif_km: 62, //стоимость 1 км
+    deliv_tarif_mins: 2 //стоимость 1 мин
+  },
+  {
+    id: 7,
+    title: "Микроавтобус Vip",
+    icon: "./src/6.png",
+    desc: "Mercedes-Benz Sprinter Vip",
+    mesta: 20,
+    min_cost: 5000, //минималка в рублях
+    deliv_tarif_km: 72, //стоимость 1 км
+    deliv_tarif_mins: 2 //стоимость 1 мин
+  },
+  {
+    id: 8,
+    title: "Маршрутка",
+    icon: "./src/7.png",
+    desc: "Hyndai County",
+    mesta: 20,
+    min_cost: 3000, //минималка в рублях
+    deliv_tarif_km: 53, //стоимость 1 км
+    deliv_tarif_mins: 2 //стоимость 1 мин
+  },
+  {
+    id: 9,
+    title: "Автобус",
+    icon: "./src/7.png",
+    desc: "Hyndai",
+    mesta: 44,
+    min_cost: 7000, //минималка в рублях
+    deliv_tarif_km: 92, //стоимость 1 км
+    deliv_tarif_mins: 2 //стоимость 1 мин
+  },
+  {
+    id: 10,
+    title: "Автобус",
+    icon: "./src/7.png",
+    desc: "Hyndai",
+    mesta: 50,
+    min_cost: 7000, //минималка в рублях
+    deliv_tarif_km: 130, //стоимость 1 км
+    deliv_tarif_mins: 2 //стоимость 1 мин
+  },
+  {
+    id: 11,
+    title: "Услуга трезвый водитель (Перегон)",
+    icon: "./src/7.png",
+    desc: "Наш водитель доставит вас и ваш автомобиль в любое место",
+    mesta: "",
+    min_cost: 700, //минималка в рублях
+    deliv_tarif_km: 50, //стоимость 1 км
+    deliv_tarif_mins: 2 //стоимость 1 мин
+  }
+];
 
 new Vue({
   el: '#app',

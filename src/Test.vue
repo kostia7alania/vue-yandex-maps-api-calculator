@@ -11,9 +11,9 @@
        <span slot="no-options">Нет результатов... </span>
     <template slot="option" slot-scope="option">
         <b-row  class="justify-content-md-center">
-            <b-col><b-badge pill variant="success">{{ option.title }} </b-badge> </b-col>
+            <b-col><b-badge pill variant="success">{{ option.title }} (до {{option.mesta}} мест)</b-badge> </b-col>
             <b-col >{{ option.desc }}</b-col>
-            <b-col  cols="12" md="auto">от {{ option.desc_cost }}</b-col>
+            <b-col  cols="12" md="auto">от {{ option.min_cost }}</b-col>
            <b-col cols="12" md="auto"><b-img slot="aside" :src="option.icon" width="100" alt="Фото транспорта" /></b-col>
         </b-row>
     </template>
@@ -33,27 +33,7 @@
             <span class="range-slider__value">{{passagers}}</span>
             <vue-slider v-model="passagers" :min=1 :max="max_sit" v-bind="opts"></vue-slider>
           </div>
-
-
-
         </div>
-        <div class="col col-lg-6 center" v-if="standShow">
-          <b class="bold">стоячих:</b>
-
-          <div>
-            <input type="range"
-              v-model="passagers_stand"
-              :min="0" :max="max_stand" step="1">
-            <vue-slider v-model="passagers_stand" :min=0 :max="max_stand" v-bind="opts"></vue-slider>
-
-
-            <span>{{passagers_stand}}</span>
-          </div>
-
-
-    </div>
-
-
     </div>
   </div>
 
@@ -157,10 +137,7 @@ export default {
         tel: '',
         selected: 0,
         passagers: 1,
-        passagers_stand: 0,
-        max_stand: 0,
         max_sit: 4,
-
         price: 0,
         distance_val: '',
         durationInTraffic_val: '',
@@ -177,11 +154,8 @@ export default {
         comment: ''
     }
   },
-  computed: {
-    standShow(){ if(typeof this.tarifs != 'undefined') return this.tarifs[this.selected].mesta.standup>0?1:0;
-    else return false }
-  },
-  mounted(){ window.v = this; ya_init()},
+  mounted(){ window.v = this;
+   console.log ('yaaa=====',ya_init())},
   methods: {
     tudaobratnoHandler(e){
       this.tudaobratno = e==true?1:0;
@@ -196,16 +170,16 @@ export default {
         console.log('this.selected=>',this.selected)
         this.calculate_cost();
         console.log(1111111111111)
-        this.max_stand  = this.tarifs[this.selected].mesta.standup;
-        this.max_sit    = this.tarifs[this.selected].mesta.sitdown
-        this.passagers =       this.passagers      >this.tarifs[this.selected].mesta.sitdown?this.tarifs[this.selected].mesta.sitdown:this.passagers;
-        this.passagers_stand = this.passagers_stand>this.tarifs[this.selected].mesta.standup?this.tarifs[this.selected].mesta.standup:this.passagers_stand;
-    },
+        this.max_sit    = this.tarifs[this.selected].mesta
+        this.passagers =       this.passagers      >this.tarifs[this.selected].mesta?this.tarifs[this.selected].mesta:this.passagers;
+     },
     calculate_cost(){
           var min_cost    =  this.tarifs[this.selected].min_cost
-          var deliv_tarif =  this.tarifs[this.selected].deliv_tarif
-          var a = Math.round(Math.max( (this.distance_val / 1000) * deliv_tarif, min_cost));
-          this.price = a>min_cost?a:min_cost;
+          var deliv_tarif_km =  this.tarifs[this.selected].deliv_tarif_km
+          var deliv_tarif_mins =  this.tarifs[this.selected].deliv_tarif_mins
+          var cost_km = Math.round(Math.max( (this.distance_val / 1000) * deliv_tarif_km, min_cost));
+          var cost_mins = Math.round(Math.max( (this.duration_val / 60) * deliv_tarif_mins, min_cost));
+          this.price = Math.max(cost_km,cost_mins,min_cost);
           this.price = this.tudaobratno==1?(this.price/2+this.price):this.price;
 
     }
