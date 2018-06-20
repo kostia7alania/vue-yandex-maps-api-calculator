@@ -20,7 +20,7 @@ window.tarifs = [
     icon: './src/1.png',
     desc: 'Hondai Solaris и подобные',
     desc_cost: '1 414 р.',
-    mesta: {sitdown: 4,standup: 0},
+    mesta: {sitdown: 3,standup: 0},
     min_cost: 600,
     deliv_tarif: 30
   },{
@@ -29,7 +29,7 @@ window.tarifs = [
     icon: './src/2.png',
     desc: 'Scoda Octavia и подобные',
     desc_cost: '1 995 р.',
-    mesta: {sitdown: 4,standup: 0},
+    mesta: {sitdown: 3,standup: 0},
     min_cost: 600,
     deliv_tarif: 30
     },{
@@ -38,7 +38,7 @@ window.tarifs = [
       icon: './src/3.png',
       desc: 'Toyota Camry и подобные',
       desc_cost: '2 626 р.',
-      mesta: {sitdown: 4,standup: 0},
+      mesta: {sitdown: 3,standup: 0},
       min_cost: 600,
       deliv_tarif: 30
     },{
@@ -47,7 +47,7 @@ window.tarifs = [
       icon: './src/4.png',
       desc: 'Mercedes-Benz E-class w212 и подобные',
       desc_cost: '2 929 р.',
-      mesta: {        sitdown: 15,        standup: 20      },
+      mesta: {        sitdown: 3,        standup: 0      },
       min_cost: 700,
       deliv_tarif: 25
     },{
@@ -56,7 +56,7 @@ window.tarifs = [
       icon: './src/5.png',
       desc: 'Wolkswagen Caravelle и подобные',
       desc_cost: '3 535 р.',
-      mesta: {sitdown: 4,standup: 0},
+      mesta: {sitdown: 6,standup: 2},
       min_cost: 500,
       deliv_tarif: 31, //стоимость 1 км
       deliv_tarif_min: 1 //стоимость 1 мин
@@ -66,7 +66,7 @@ window.tarifs = [
       icon: './src/6.png',
       desc: 'Mercedes-Benz Vito и подобные',
       desc_cost: '4 495 р.',
-      mesta: {sitdown: 4,standup: 1},
+      mesta: {sitdown: 10,standup: 4},
       min_cost: 600,
       deliv_tarif: 30
     }

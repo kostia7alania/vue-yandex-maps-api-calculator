@@ -7,7 +7,7 @@
 
   <h3>Выберите транспорт:</h3>
 
-  <v-select :on-change="selectCarHandler" :options="tarifs" label="title">
+  <v-select :on-change="selectCarHandler"  :searchable="false" :options="tarifs" label="title">
        <span slot="no-options">Нет результатов... </span>
     <template slot="option" slot-scope="option">
         <b-row  class="justify-content-md-center">
@@ -31,6 +31,7 @@
                 v-model="passagers"
                 :min="1" :max="max_sit" step="1">
             <span class="range-slider__value">{{passagers}}</span>
+            <vue-slider v-model="passagers" :min=1 :max="max_sit" v-bind="opts"></vue-slider>
           </div>
 
 
@@ -43,6 +44,7 @@
             <input type="range"
               v-model="passagers_stand"
               :min="0" :max="max_stand" step="1">
+            <vue-slider v-model="passagers_stand" :min=0 :max="max_stand" v-bind="opts"></vue-slider>
 
 
             <span>{{passagers_stand}}</span>
@@ -138,10 +140,17 @@
 </template>
 
 <script>
+import vueSlider from 'vue-slider-component';
 export default {
+  components: {vueSlider},
   props: ['tarifs'],
   data () {
-    return {
+    return {value:1,
+    opts:{
+
+         piecewiseLabel: true,piecewise: true,
+        piecewiseStyle: {  "backgroundColor": "#ccc",  "visibility": "visible",  "width": "12px",  "height": "12px"},
+        piecewiseActiveStyle: {  "backgroundColor": "#3498db"},labelActiveStyle: {  "color": "#3498db"}},
         mask: '##:##',
         placeholder: '23:45',
           tudaobratno:0,
@@ -205,7 +214,7 @@ export default {
 </script>
 
 <style>
-
+.clear{display:none}
 select:hover{cursor:pointer} select {border: 1px dashed black;}
  input.ymaps-2-1-64-route-panel-input__input {
     color: black;
