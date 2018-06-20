@@ -1,50 +1,32 @@
 <template>
- <div style="text-align:center">
-
-
-<div>
-<b-container>
-
-  <h3>Выберите транспорт:</h3>
-
-  <v-select :on-change="selectCarHandler"  :searchable="false" :options="tarifs" label="title">
-       <span slot="no-options">Нет результатов... </span>
-    <template slot="option" slot-scope="option">
-        <b-row  class="justify-content-md-center">
-            <b-col><b-badge pill variant="success">{{ option.title }} (до {{option.mesta}} мест)</b-badge> </b-col>
-            <b-col >{{ option.desc }}</b-col>
-            <b-col  cols="12" md="auto">от {{ option.min_cost }}</b-col>
-           <b-col cols="12" md="auto"><b-img slot="aside" :src="option.icon" width="100" alt="Фото транспорта" /></b-col>
-        </b-row>
-    </template>
-  </v-select>
-
-</b-container>
-    <div>
-      <h3>Количество пассажиров:</h3>
-
-      <div class="row  justify-content-md-center">
-        <div class="col col-lg-6 center">
-          <b>сидячих:</b>
-          <div>
-            <input type="range"
-                v-model="passagers"
-                :min="1" :max="max_sit" step="1">
-            <span class="range-slider__value">{{passagers}}</span>
-            <vue-slider v-model="passagers" :min=1 :max="max_sit" v-bind="opts"></vue-slider>
+  <div style="text-align:center">
+    <b-container>
+      <h3>Выберите транспорт:</h3>
+      <v-select :on-change="selectCarHandler"  :searchable="false" :options="tarifs" label="title">
+        <span slot="no-options">Нет результатов... </span>
+        <template slot="option" slot-scope="option">
+              <b-row  class="justify-content-md-center">
+                  <b-col><b-badge pill variant="success">{{ option.title }} <span v-if="option.mesta>0">(до {{option.mesta}} мест)</span></b-badge> </b-col>
+                  <b-col >{{ option.desc }} и подобные</b-col>
+                  <b-col  cols="12" md="auto">от {{ option.min_cost }}
+                    <i class="fa fa-ruble-sign" aria-hidden="true"></i>
+                  </b-col>
+                <b-col cols="12" md="auto"><b-img slot="aside" :src="option.icon" width="100" alt="Фото транспорта" /></b-col>
+              </b-row>
+          </template>
+      </v-select>
+      <div v-if="tarifs[selected].mesta>0">
+        <h3>Количество пассажиров:</h3>
+        <div class="row  justify-content-md-center">
+          <div class="col col-lg-6 center">
+            <vue-slider v-model="passagers" :min=0 :max="max_sit" v-bind="opts"></vue-slider>
           </div>
         </div>
-    </div>
-  </div>
-
- </div>
+      </div>
 
 
-
-
-  <h3>Выберите адреса на карте</h3>
-  <div id="map"></div>
-
+    <h3>Выберите адреса на карте</h3>
+    <div id="map"></div>
 
 
   <div v-if="distance_val"  class="row">
@@ -59,21 +41,21 @@
        <p><b>Дистанция: </b> {{distance_text}} <br>
        <b>Время с учетом текущих пробок:</b> {{durationInTraffic_text}}<br>
        <b>Время в среднем:</b> {{duration_text}}</p>
-    <p style="font-size:33px" ><b>Примерная стоимость:</b> {{price}} руб.</p>
+    <h1> Примерная стоимость:
+    {{tudaobratno>0?(price/1.50) + " + " + (price-price/1.50) + " = " +price : price }}
+    <i class="fa fa-ruble-sign"></i>
+    </h1>
 
+  <b-form-checkbox id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">скидка -50%</b-badge> <b-badge pill variant="primary">ожидание - до 4х часов</b-badge></b-form-checkbox>
 
-     <p> <b-form-checkbox id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">скидка -50%</b-badge></b-form-checkbox></p>
-
-</div>
-</div>
-<hr>
-<div>
-<div>
-  <b-container>
+  </div>
+  </div>
+  <hr>
+  <div>
+  <div>
     <b-input-group prepend="Введите телефон">
-      <b-form-input type="tel" class="form-control" id="exampleFormControlInput1" v-mask="'+7(###)-###-####'" placeholder="+7(___)-___-____" v-model="tel"></b-form-input>
+      <input class="form-control" type="tel" v-mask="'+7(###)-###-####'" placeholder="+7(___)-___-____" v-model="tel"></input>
     </b-input-group>
-  </b-container>
 
 <br>
     <div>
@@ -105,7 +87,7 @@
     <b-container>
       <b-row class="my-1">
          <b-col sm="12">
-            <b-button  size="lg"  variant="danger">Заказать этот маршрут</b-button>
+            <b-button  size="lg" @click="zakazat" variant="danger">Заказать этот маршрут</b-button>
         </b-col>
      </b-row>
     </b-container>
@@ -116,6 +98,7 @@
   </div>
 
 
+   </b-container>
 </div>
 </template>
 
@@ -126,14 +109,14 @@ export default {
   props: ['tarifs'],
   data () {
     return {value:1,
-    opts:{
-
-         piecewiseLabel: true,piecewise: true,
-        piecewiseStyle: {  "backgroundColor": "#ccc",  "visibility": "visible",  "width": "12px",  "height": "12px"},
-        piecewiseActiveStyle: {  "backgroundColor": "#3498db"},labelActiveStyle: {  "color": "#3498db"}},
+        opts:{
+          piecewiseLabel: true,piecewise: true,
+          piecewiseStyle: {  "backgroundColor": "#ccc",  "visibility": "visible",  "width": "12px",  "height": "12px"},
+          piecewiseActiveStyle: {  "backgroundColor": "#3498db"},labelActiveStyle: {  "color": "#3498db"}
+        },
         mask: '##:##',
         placeholder: '23:45',
-          tudaobratno:0,
+        tudaobratno:0,
         tel: '',
         selected: 0,
         passagers: 1,
@@ -157,6 +140,9 @@ export default {
   mounted(){ window.v = this;
    console.log ('yaaa=====',ya_init())},
   methods: {
+    zakazat(){
+      alert('\n ! ! !! ! ВОТ ТЕБЕ ВСЯ СОБРАННАЯ ИНФА по заказу =>>>\n\n (это все надо терь апрокинуть тебе в ворпресс)\n\n'+JSON.stringify(this.$data))
+    },
     tudaobratnoHandler(e){
       this.tudaobratno = e==true?1:0;
        this.calculate_cost();
