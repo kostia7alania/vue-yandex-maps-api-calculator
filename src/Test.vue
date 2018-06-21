@@ -6,7 +6,8 @@
         <span slot="no-options">Нет результатов... </span>
         <template slot="option" slot-scope="option">
               <b-row  class="justify-content-md-center">
-                  <b-col><b-badge pill variant="success">{{ option.title }} <span v-if="option.mesta>0">(до {{option.mesta}} мест)</span></b-badge> </b-col>
+                  <b-col><b-badge pill variant="success">{{ option.title }}</b-badge>
+                    <span style="font-weight:555" class="fa fa-male fa-1x" v-if="option.mesta>0">  {{option.mesta}} </span> </b-col>
                   <b-col >{{ option.desc }} и подобные</b-col>
                   <b-col  cols="12" md="auto">от {{ option.min_cost }}
                     <i class="fa fa-ruble-sign" aria-hidden="true"></i>
@@ -30,17 +31,19 @@
 
 
   <div v-if="distance_val"  class="row">
-    <div class="col-12">
-    </div>
+<br>
+  <div class="col"> <b-alert show variant="danger"><b>Дистанция: </b> {{distance_text}}  </b-alert></div>
+  <div class="col">  <b-alert show variant="danger"> <b><i class="fa fa-clock" aria-hidden="true"></i></b> {{dispClock}} </b-alert></div>
+  <div class="col">  <b-alert show variant="danger"><i class="fas fa-tachometer-alt"></i> {{dispSpeed}} км/ч </b-alert></div>
+
+
     <div class="col-12">
     <p>
       <b>Откуда:</b> {{firstGeoObject}}<br>
       <b>Куда:</b> {{secontGeoObject}}<br>
       Посмотреть на сайте <a target="_blank" :href="'https://yandex.ru/maps?mode=routes&rtext='+x1+'%2C'+y1+'~'+x2+'%2C'+y2">Яндекс карты</a>
     </p>
-       <p><b>Дистанция: </b> {{distance_text}} <br>
-       <b>Время с учетом текущих пробок:</b> {{durationInTraffic_text}}<br>
-       <b>Время в среднем:</b> {{duration_text}}</p>
+
     <h1> Примерная стоимость:
     {{tudaobratno>0?(price/1.50) + " + " + (price-price/1.50) + " = " +price : price }}
     <i class="fa fa-ruble-sign"></i>
@@ -139,6 +142,30 @@ export default {
   },
   mounted(){ window.v = this;
    console.log ('yaaa=====',ya_init())},
+   computed:{
+     dispSpeed(){
+      let distance_val = this.distance_val/1000;   //км
+       let duration_val = this.duration_val/60/60;  //часы
+       let durationInTraffic_val = this.durationInTraffic_val/60/60; //часы
+       let km_ch = Math.round(distance_val/duration_val)
+       let km_ch_trafic =Math.round(distance_val/durationInTraffic_val)
+
+        if(km_ch==km_ch_trafic) return km_ch;
+        if(km_ch<km_ch_trafic)  return km_ch + ' - ' + km_ch_trafic;
+        if(km_ch>km_ch_trafic)  return km_ch_trafic + ' - ' + km_ch;
+
+     },
+     dispClock(){
+       let duration_text = this.duration_text;
+       let durationInTraffic_text = this.durationInTraffic_text;
+        if(parseInt(durationInTraffic_text)==parseInt(duration_text)){
+              var output = duration_text;
+        }else if(parseInt(durationInTraffic_text)>parseInt(duration_text)){
+              var output = duration_text + ' - ' + durationInTraffic_text;
+        }else{var output = durationInTraffic_text + ' - ' + duration_text; }
+        return output;
+     }
+   },
   methods: {
     zakazat(){
       alert('\n ! ! !! ! ВОТ ТЕБЕ ВСЯ СОБРАННАЯ ИНФА по заказу =>>>\n\n (это все надо терь апрокинуть тебе в ворпресс)\n\n'+JSON.stringify(this.$data))
