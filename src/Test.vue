@@ -26,7 +26,8 @@
 
 
     <div v-show="var_arendy_selected == 'standart' ">
-      <div v-show=" (tarifs[selected].mesta>0)">
+
+      <div v-if=" (tarifs[selected].mesta>0) && (var_arendy_selected == 'standart') ">
         <h3>Количество пассажиров:</h3>
         <div class="row  justify-content-md-center">
           <div class="col col-lg-6 center">
