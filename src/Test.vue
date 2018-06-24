@@ -23,7 +23,10 @@
               </b-row>
           </template>
       </v-select>
-      <div v-if="tarifs[selected].mesta>0">
+
+
+    <div v-show="var_arendy_selected == 'standart' ">
+      <div v-show=" (tarifs[selected].mesta>0)">
         <h3>Количество пассажиров:</h3>
         <div class="row  justify-content-md-center">
           <div class="col col-lg-6 center">
@@ -38,7 +41,7 @@
 
 
   <div v-if="distance_val"  class="row">
-<br>
+  <br>
   <div class="col"> <b-alert show variant="danger"><i class="fa fa-road" aria-hidden="true"></i> {{distance_text}}  </b-alert></div>
   <div class="col">  <b-alert show variant="danger"> <b><i class="fa fa-clock" aria-hidden="true"></i></b> {{dispClock}} </b-alert></div>
   <div class="col">  <b-alert show variant="danger"><i class="fas fa-tachometer-alt"></i> {{dispSpeed}} км/ч </b-alert></div>
@@ -50,7 +53,7 @@
       <b>Куда:</b> {{secontGeoObject}}<br>
       <!-- Посмотреть на сайте <a target="_blank" :href="'https://yandex.ru/maps?mode=routes&rtext='+x1+'%2C'+y1+'~'+x2+'%2C'+y2">Яндекс карты</a> -->
     </p>
-
+   </div>
     <h1> Примерная стоимость:
     {{tudaobratno>0?(price/1.50) + " + " + (price-price/1.50) + " = " +price : price }}
     <i class="fa fa-ruble-sign"></i>
@@ -68,7 +71,7 @@
     </b-input-group>
 
 <br>
-    <div>
+    <div v-show="var_arendy_selected=='standart'">
       <b-btn v-b-toggle.collapse2 variant="default">Выбрать дату</b-btn>
       <b-collapse id="collapse2" class="mt-2">
           <b-container>
@@ -79,7 +82,20 @@
           </b-container>
       </b-collapse>
     </div>
-
+    <div v-show="var_arendy_selected!='standart'">
+      <b-btn v-b-toggle.collapse2 variant="default">Выбрать даты</b-btn>
+      <b-collapse id="collapse2" class="mt-2">
+          <b-container>
+            <b-row> 
+              <b-col sm="3">Дата начала аренды:<b-form-input type="date"  v-model="go_to_date"></b-form-input></b-col>
+              <b-col sm="3">Время начала аренды:<b-form-input type="time"  v-model="go_to_time"></b-form-input></b-col>
+              
+              <b-col sm="3">Дата окончания аренды:<b-form-input type="date"  v-model="go_to_date_arenda_end"></b-form-input></b-col>
+              <b-col sm="3">Время окончания аренды:<b-form-input type="time"  v-model="go_to_time_arenda_end"></b-form-input></b-col>
+            </b-row>
+          </b-container>
+      </b-collapse> 
+    </div>
     <br>
 
     <div>
@@ -95,7 +111,11 @@
 
     <br>
     <div class="text-center">
-      <b-btn @click="zakazat"  id="tooltipButton-1" variant="outline-danger">Заказать трансфер</b-btn>
+      <b-btn @click="zakazat"  id="tooltipButton-1" variant="outline-success">Заказать 
+        <span v-if="var_arendy_selected=='standart'">трансфер</span>
+        <span v-else>автомобиль</span>
+        
+        </b-btn>
       <b-tooltip :show="true" target="tooltipButton-1" placement="bottom">Предоплата 20% </b-tooltip>
     </div>
   
@@ -147,7 +167,9 @@ export default {
         tel_val:"+7 (___) ___ ____",
         go_to_date:'',
         go_to_time:'',
-        comment: ''
+        comment: '',
+        go_to_date_arenda_end:'',
+        go_to_time_arenda_end:''
     }
   },
   mounted(){ window.v = this;
