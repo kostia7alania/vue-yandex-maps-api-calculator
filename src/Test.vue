@@ -1,14 +1,21 @@
 <template>
   <div style="text-align:center">
     <b-container>
+        
+   <b-form-group label="Вариант аренды:">
+      <b-form-radio-group v-model="var_arendy_selected" :options="var_arendy" name="radioInline"> </b-form-radio-group>
+    </b-form-group>
+  
+
       <h3>Выберите транспорт:</h3>
-      <v-select :on-change="selectCarHandler"  :searchable="false" :options="tarifs" label="title">
+      <v-select v-model="selected_obj" :on-change="selectCarHandler" :searchable="false" :options="tarifs" label="title">
         <span slot="no-options">Нет результатов... </span>
         <template slot="option" slot-scope="option">
               <b-row  class="justify-content-md-center">
                   <b-col><b-badge pill variant="success">{{ option.title }}</b-badge>
-                    <span style="font-weight:555" class="fa fa-male fa-1x" v-if="option.mesta>0">  {{option.mesta}} </span> </b-col>
-                  <b-col >{{ option.desc }} и подобные</b-col>
+                    <span style="font-weight:555" class="fa fa-male fa-1x" v-if="option.mesta>0"> 
+                       {{option.mesta}} </span> </b-col>
+                  <b-col>{{ option.desc }} <span  v-if="option.mesta>0" >и подобные</span></b-col>
                   <b-col  cols="12" md="auto">от {{ option.min_cost }}
                     <i class="fa fa-ruble-sign" aria-hidden="true"></i>
                   </b-col>
@@ -32,7 +39,7 @@
 
   <div v-if="distance_val"  class="row">
 <br>
-  <div class="col"> <b-alert show variant="danger"><b>Дистанция: </b> {{distance_text}}  </b-alert></div>
+  <div class="col"> <b-alert show variant="danger"><i class="fa fa-road" aria-hidden="true"></i> {{distance_text}}  </b-alert></div>
   <div class="col">  <b-alert show variant="danger"> <b><i class="fa fa-clock" aria-hidden="true"></i></b> {{dispClock}} </b-alert></div>
   <div class="col">  <b-alert show variant="danger"><i class="fas fa-tachometer-alt"></i> {{dispSpeed}} км/ч </b-alert></div>
 
@@ -41,7 +48,7 @@
     <p>
       <b>Откуда:</b> {{firstGeoObject}}<br>
       <b>Куда:</b> {{secontGeoObject}}<br>
-      Посмотреть на сайте <a target="_blank" :href="'https://yandex.ru/maps?mode=routes&rtext='+x1+'%2C'+y1+'~'+x2+'%2C'+y2">Яндекс карты</a>
+      <!-- Посмотреть на сайте <a target="_blank" :href="'https://yandex.ru/maps?mode=routes&rtext='+x1+'%2C'+y1+'~'+x2+'%2C'+y2">Яндекс карты</a> -->
     </p>
 
     <h1> Примерная стоимость:
@@ -49,7 +56,7 @@
     <i class="fa fa-ruble-sign"></i>
     </h1>
 
-  <b-form-checkbox id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">скидка -50%</b-badge> <b-badge pill variant="primary">ожидание - до 4х часов</b-badge></b-form-checkbox>
+  <b-form-checkbox id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">При поездке >100 км - скидки до 50%</b-badge> <b-badge pill variant="primary"> и бесплатное ожидание - до 4х часов</b-badge></b-form-checkbox>
 
   </div>
   </div>
@@ -76,25 +83,23 @@
     <br>
 
     <div>
-      <b-btn v-b-toggle.collapse1 variant="default">Добавить комментарий</b-btn>
+      <b-btn v-b-toggle.collapse1 variant="default">Добавить пожелания</b-btn>
       <b-collapse id="collapse1" class="mt-2">
         <b-form-textarea v-model="comment"
-                        placeholder="Ваш комментарий или вопрос можете оставить здесь..."
+                        placeholder="Ваши пожелания, нюансы, будут-ли дети (нужны-ли детские кресла)..."
                         :rows="3"
                         :max-rows="5">
         </b-form-textarea>
       </b-collapse>
     </div>
 
-<br>
-    <b-container>
-      <b-row class="my-1">
-         <b-col sm="12">
-            <b-button  size="lg" @click="zakazat" variant="danger">Заказать этот маршрут</b-button>
-        </b-col>
-     </b-row>
-    </b-container>
-   </div>
+    <br>
+    <div class="text-center">
+      <b-btn @click="zakazat"  id="tooltipButton-1" variant="outline-danger">Заказать трансфер</b-btn>
+      <b-tooltip :show="true" target="tooltipButton-1" placement="bottom">Предоплата 20% </b-tooltip>
+    </div>
+  
+  </div>
 
 
 
@@ -111,8 +116,12 @@ export default {
   components: {vueSlider},
   props: ['tarifs'],
   data () {
-    return {value:1,
-        opts:{
+    return {
+      var_arendy_selected:'standart',
+      var_arendy:[{text:'Авто с водителем', value:'standart'}, 
+                  {text:'Только авто', value:'arenda'}],
+        value:1,
+        opts: {
           piecewiseLabel: true,piecewise: true,
           piecewiseStyle: {  "backgroundColor": "#ccc",  "visibility": "visible",  "width": "12px",  "height": "12px"},
           piecewiseActiveStyle: {  "backgroundColor": "#3498db"},labelActiveStyle: {  "color": "#3498db"}
@@ -122,6 +131,7 @@ export default {
         tudaobratno:0,
         tel: '',
         selected: 0,
+        selected_obj: {},
         passagers: 1,
         max_sit: 4,
         price: 0,
@@ -141,7 +151,9 @@ export default {
     }
   },
   mounted(){ window.v = this;
-   console.log ('yaaa=====',ya_init())},
+    console.log ('ya_init()=====>',ya_init())
+    this.selected_obj = tarifs[this.selected]
+   },
    computed:{
      dispSpeed(){
       let distance_val = this.distance_val/1000;   //км
