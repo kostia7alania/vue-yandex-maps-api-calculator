@@ -41,7 +41,7 @@
     <div id="map"></div>
 
 <br>
-  <div v-if="distance_val"> 
+  <div v-show="distance_val"> 
   <div class="row col">
     <div class="col-4"> <b-alert show variant="danger"><i class="fa fa-road" aria-hidden="true"></i> {{distance_text}}  </b-alert></div>
     <div class="col-4">  <b-alert show variant="danger"> <b><i class="fa fa-clock" aria-hidden="true"></i></b> {{dispClock}} </b-alert></div>
@@ -61,16 +61,13 @@
     {{tudaobratno>0?(price/1.50) + " + " + (price-price/1.50) + " = " +price : price }}
     <i class="fa fa-ruble-sign"></i>
     </h1>
-    
-    <b-btn v-b-toggle.collapse3 variant="default">Предложить свою цену</b-btn>
-    <b-collapse id="collapse3">   
-        <div class="row  justify-content-md-center">
-          <div class="col col-lg-6 center">
-            <vue-slider v-model="custom_price" :min="price/2" :max="price*2"></vue-slider>
-          </div>
+ 
+      <div class="row  justify-content-md-center">
+        <div class="col col-lg-6 col-xs-12">
+          <b-form-checkbox v-model="custom_price_checked"> Предложить свою цену </b-form-checkbox>
+          <div v-show="custom_price_checked"> <input v-model="custom_price" class="form-control" type="tel" v-mask="'######'" placeholder="_____"></input> </div>
         </div>
-    </b-collapse>
-
+      </div>
  </div>
   </div>
    </div>
@@ -155,6 +152,7 @@
     props: ['tarifs'],
     data() {
       return {
+        custom_price_checked:0,
         custom_price:'',
         var_arendy_selected: 'standart',
         var_arendy: [{
@@ -273,6 +271,7 @@
         var cost_mins = Math.round(Math.max((this.duration_val / 60) * deliv_tarif_mins, min_cost));
         this.price = Math.max(cost_km, cost_mins, min_cost);
         this.price = this.tudaobratno == 1 ? (this.price / 2 + this.price) : this.price;
+        this.custom_price = this.price;
       }
     }
   }
