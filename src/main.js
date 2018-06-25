@@ -116,7 +116,7 @@ window.tarifs = [
   },
   {
     id: 10,
-    title: "Автобус VIP",
+    title: "Автобус",
     icon: "./src/avtobus_new.png",
     desc: "Mercedes",
     mesta: 50,
