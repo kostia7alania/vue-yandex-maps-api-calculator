@@ -124,12 +124,11 @@
 
     <br>
     <div class="text-center">
-      <b-btn @click="zakazat"  id="tooltipButton-1" variant="outline-success">Заказать 
+      <b-btn @click="zakazat" @hover="show_toltip=!show_toltip" id="tooltipButton-1" variant="outline-success">Заказать 
         <span v-if="var_arendy_selected=='standart'">трансфер</span>
         <span v-else>автомобиль</span>
-        
         </b-btn>
-      <b-tooltip :show="true" target="tooltipButton-1" placement="bottom">Предоплата 20% </b-tooltip>
+      <b-tooltip :show="show_toltip" target="tooltipButton-1" placement="bottom">Предоплата 20% </b-tooltip>
     </div>
   
   </div>
@@ -152,6 +151,7 @@
     props: ['tarifs'],
     data() {
       return {
+        show_toltip:false,
         custom_price_checked:0,
         custom_price:'',
         var_arendy_selected: 'standart',

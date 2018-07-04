@@ -10,7 +10,7 @@ import VueMask from 'v-mask'; Vue.use(VueMask);
 import vSelect from 'vue-select'; Vue.component('v-select', vSelect)
 
 
-import App from './Test.vue'
+import App from './App.vue'
 
 
 window.tarifs = [
@@ -27,7 +27,7 @@ window.tarifs = [
   {
     id: 1,
     title: "Премиум",
-    icon: "./src/premium.png",
+    icon: "./src/img/premium.png",
     desc: "Mercedes S-class",
     mesta: 3,
     min_cost: 5000, //минималка в рублях
@@ -37,7 +37,7 @@ window.tarifs = [
   {
     id: 2,
     title: "Минивэн",
-    icon: "./src/minivan.png",
+    icon: "./src/img/minivan.png",
     desc: "Ford Galaxy",
     mesta: 8,
     min_cost: 3000, //минималка в рублях
@@ -47,7 +47,7 @@ window.tarifs = [
   {
     id: 3,
     title: "Минивэн+",
-    icon: "./src/miniven+viano.png",
+    icon: "./src/img/miniven+viano.png",
     desc: "Mercedes-Benz Viano",
     mesta: 7,
     min_cost: 4000, //минималка в рублях
@@ -57,7 +57,7 @@ window.tarifs = [
   {
     id: 4,
     title: "Минивэн Vip",
-    icon: "./src/minivan-vip.png",
+    icon: "./src/img/minivan-vip.png",
     desc: "Mercedes-Benz V-class",
     mesta: 6,
     min_cost: 6000, //минималка в рублях
@@ -67,7 +67,7 @@ window.tarifs = [
   {
     id: 5,
     title: "Микроавтобус",
-    icon: "./src/microavtobus-16.png",
+    icon: "./src/img/microavtobus-16.png",
     desc: "Ford Transit",
     mesta: 16,
     min_cost: 5000, //минималка в рублях
@@ -77,7 +77,7 @@ window.tarifs = [
   {
     id: 6,
     title: "Микроавтобус",
-    icon: "./src/microavtobus-20.png",
+    icon: "./src/img/microavtobus-20.png",
     desc: "Mercedes-Benz Sprinter",
     mesta: 21,
     min_cost: 5000, //минималка в рублях
@@ -87,7 +87,7 @@ window.tarifs = [
   {
     id: 7,
     title: "Микроавтобус Vip",
-    icon: "./src/vip+sprinter.png",
+    icon: "./src/img/vip+sprinter.png",
     desc: "Mercedes-Benz Sprinter Vip",
     mesta: 21,
     min_cost: 5000, //минималка в рублях
@@ -97,7 +97,7 @@ window.tarifs = [
   {
     id: 8,
     title: "Маршрутка",
-    icon: "./src/marshrutka.png",
+    icon: "./src/img/marshrutka.png",
     desc: "Hyndai County",
     mesta: 19,
     min_cost: 4000, //минималка в рублях
@@ -107,7 +107,7 @@ window.tarifs = [
   {
     id: 9,
     title: "Автобус",
-    icon: "./src/avtobus-44.png",
+    icon: "./src/img/avtobus-44.png",
     desc: "Hyndai",
     mesta: 44,
     min_cost: 7000, //минималка в рублях
@@ -117,7 +117,7 @@ window.tarifs = [
   {
     id: 10,
     title: "Автобус",
-    icon: "./src/avtobus_new.png",
+    icon: "./src/img/avtobus_new.png",
     desc: "Mercedes",
     mesta: 50,
     min_cost: 8000, //минималка в рублях
@@ -127,7 +127,7 @@ window.tarifs = [
   {
     id: 11,
     title: "Услуга трезвый водитель (Перегон)",
-    icon: "./src/9.png",
+    icon: "./src/img/9.png",
     desc: "Доставим Вас и Ваш автомобиль в любое место",
     mesta: "",
     min_cost: 800, //минималка в рублях
