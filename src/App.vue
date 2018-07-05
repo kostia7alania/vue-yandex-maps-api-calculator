@@ -56,7 +56,7 @@
       <b>Куда:</b> {{secontGeoObject}}<br>
       <!-- Посмотреть на сайте <a target="_blank" :href="'https://yandex.ru/maps?mode=routes&rtext='+x1+'%2C'+y1+'~'+x2+'%2C'+y2">Яндекс карты</a> -->
  
-     <b-form-checkbox id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">При поездке >100 км - скидки до 50%</b-badge> <b-badge pill variant="primary"> и бесплатное ожидание - до 4х часов</b-badge></b-form-checkbox>
+     <b-form-checkbox v-show="tarifs[selected].id==11" id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">При поездке >100 км - скидки до 50%</b-badge> <b-badge pill variant="primary"> и бесплатное ожидание - до 4х часов</b-badge></b-form-checkbox>
 
     <h1> Примерная стоимость:
     {{tudaobratno>0?(price/1.50) + " + " + (price-price/1.50) + " = " +price : price }}
@@ -264,15 +264,28 @@
         this.max_sit = this.tarifs[this.selected].mesta
         this.passagers = this.passagers > this.tarifs[this.selected].mesta ? this.tarifs[this.selected].mesta : this.passagers;
       },
-      calculate_cost() {
+      calculate_cost() {   
         var min_cost = this.tarifs[this.selected].min_cost
         var deliv_tarif_km = this.tarifs[this.selected].deliv_tarif_km
-        var deliv_tarif_mins = this.tarifs[this.selected].deliv_tarif_mins
-        var cost_km = Math.round(Math.max((this.distance_val / 1000) * deliv_tarif_km, min_cost));
-        var cost_mins = Math.round(Math.max((this.duration_val / 60) * deliv_tarif_mins, min_cost));
-        this.price = Math.max(cost_km, cost_mins, min_cost);
-        this.price = this.tudaobratno == 1 ? ( this.price / 2 + this.price ) : this.price;
-        this.custom_price = this.price;
+
+        if(this.tarifs[this.selected].id==11){// под перегонщиkа ))
+          this.tudaobratno = 0; //тока в одну сторону) типа в обе стороны - дешевле вызывать обычное такси)% ну - пока так) а вообще. челу может надо нескоких доставить в пару точек)  но пока тока реализовано в одну)
+          if( (this.distance_val / 1000) <=3 ){//3km
+            this.custom_price = this.price = min_cost;
+
+          }else{
+            var cost_km = Math.round(((this.distance_val / 1000) -3) * deliv_tarif_km + min_cost);//-3km + min_cost
+            this.custom_price = this.price = cost_km;
+          }
+
+        }  else {
+          //var deliv_tarif_mins = this.tarifs[this.selected].deliv_tarif_mins
+          var cost_km = Math.round((this.distance_val / 1000) * deliv_tarif_km);
+          //var cost_mins = Math.round((this.duration_val / 60) * deliv_tarif_mins);
+          this.price = Math.max(cost_km,/*cost_mins,*/ min_cost);
+          this.price = this.tudaobratno == 1 ? ( this.price / 2 + this.price ) : this.price;
+          this.custom_price = this.price;
+        }
       }
     }
   }
