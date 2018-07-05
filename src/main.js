@@ -17,7 +17,7 @@ window.tarifs = [
   {
     id: 0,
     title: "Бизнес",
-    icon: "./src/4.png",
+    icon: "./src/img/4.png",
     desc: "Mercedes E-class",
     mesta: 4,
     min_cost: 2000, //минималка в рублях
