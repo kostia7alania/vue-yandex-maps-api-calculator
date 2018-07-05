@@ -38,15 +38,15 @@
 
 
     <h3>Выберите адреса на карте</h3>
-    Введите адреса в поля или на карте переместите метку Откуда и поставьте метку Куда
+     Введите адреса в поля или на карте переместите метку Откуда и поставьте метку Куда
     <div id="map"></div>
 
 <br>
   <div v-show="distance_val"> 
   <div class="row col">
-    <div class="col-4"> <b-alert show variant="danger"><i class="fa fa-road" aria-hidden="true"></i> {{distance_text}}  </b-alert></div>
-    <div class="col-4">  <b-alert show variant="danger"> <b><i class="fa fa-clock" aria-hidden="true"></i></b> {{dispClock}} </b-alert></div>
-    <div class="col-4">  <b-alert show variant="danger"><i class="fas fa-tachometer-alt"></i> {{dispSpeed}} км/ч </b-alert></div>
+    <div class="col-md-4"> <b-alert show variant="danger"><i class="fa fa-road" aria-hidden="true"></i> {{distance_text}}  </b-alert></div>
+    <div class="col-md-4">  <b-alert show variant="danger"> <b><i class="fa fa-clock" aria-hidden="true"></i></b> {{dispClock}} </b-alert></div>
+    <div class="col-md-4">  <b-alert show variant="danger"><i class="fas fa-tachometer-alt"></i> {{dispSpeed}} км/ч </b-alert></div>
  </div>
  
  <div class="row">
@@ -256,11 +256,11 @@
         this.passagers = e.target.value;
       },
       selectCarHandler(e) {
-        console.log('e.idd=>', e.id)
-        this.selected = e.id
-        console.log('this.selected=>', this.selected)
+        console.log('e.idd=>', e.id);
+        this.selected = e.id;
+        console.log('this.selected=>', this.selected);
         this.calculate_cost();
-        console.log(1111111111111)
+        console.log(1111111111111);
         this.max_sit = this.tarifs[this.selected].mesta
         this.passagers = this.passagers > this.tarifs[this.selected].mesta ? this.tarifs[this.selected].mesta : this.passagers;
       },
@@ -271,7 +271,7 @@
         var cost_km = Math.round(Math.max((this.distance_val / 1000) * deliv_tarif_km, min_cost));
         var cost_mins = Math.round(Math.max((this.duration_val / 60) * deliv_tarif_mins, min_cost));
         this.price = Math.max(cost_km, cost_mins, min_cost);
-        this.price = this.tudaobratno == 1 ? (this.price / 2 + this.price) : this.price;
+        this.price = this.tudaobratno == 1 ? ( this.price / 2 + this.price ) : this.price;
         this.custom_price = this.price;
       }
     }
