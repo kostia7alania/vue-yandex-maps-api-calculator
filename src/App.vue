@@ -397,4 +397,10 @@
     padding: 0;
     margin: 0;
   }
+
+
+
+  input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"] {
+    color: black;
+}
 </style>
