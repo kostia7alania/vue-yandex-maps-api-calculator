@@ -16,3 +16,6 @@ npm run build
 ```
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+## Preview: https://kostia7alania.github.io/vue-yandex-maps-api-calculator/
