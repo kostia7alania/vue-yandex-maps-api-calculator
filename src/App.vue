@@ -56,7 +56,7 @@
       <b>Куда:</b> {{secontGeoObject}}<br>
       <!-- Посмотреть на сайте <a target="_blank" :href="'https://yandex.ru/maps?mode=routes&rtext='+x1+'%2C'+y1+'~'+x2+'%2C'+y2">Яндекс карты</a> -->
  
-     <b-form-checkbox v-show="tarifs[selected].id==11" id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">При поездке >100 км - скидки до 50%</b-badge> <b-badge pill variant="primary"> и бесплатное ожидание - до 4х часов</b-badge></b-form-checkbox>
+     <b-form-checkbox v-show="tarifs[selected].id!=11" id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">При поездке >100 км - скидки до 50%</b-badge> <b-badge pill variant="primary"> и бесплатное ожидание - до 4х часов</b-badge></b-form-checkbox>
 
     <h1> Примерная стоимость:
     {{tudaobratno>0?(price/1.50) + " + " + (price-price/1.50) + " = " +price : price }}
