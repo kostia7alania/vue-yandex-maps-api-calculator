@@ -133,7 +133,27 @@ window.tarifs = [
     min_cost: 800, //минималка в рублях
     deliv_tarif_km: 55, //стоимость 1 км
     deliv_tarif_mins: 2 //стоимость 1 мин
-  }
+  },{
+    id: 12,
+    title: 'Перевозка авто до 1,5 тонн на эвакуаторе',
+    icon: './src/evakuator.jpg',
+    desc: 'Наш водитель на эвакуаторе погрузит и перевезёт ваш автомобиль',
+    desc_cost: '3 535 р.',
+    mesta: {sitdown: 6,standup: 2},
+    min_cost: 6000,
+    deliv_tarif: 59, //стоимость 1 км
+    deliv_tarif_min: 1 //стоимость 1 мин
+    },{
+    id: 13,
+    title: 'Перевозка авто до 3 тонн на эвакуаторе',
+    icon: './src/evakuator3.jpg',
+    desc: 'Наш водитель на эвакуаторе погрузит и перевезёт ваш автомобиль',
+    desc_cost: '3 535 р.',
+    mesta: {sitdown: 6,standup: 2},
+    min_cost: 7000,
+    deliv_tarif: 68, //стоимость 1 км
+    deliv_tarif_min: 1 //стоимость 1 мин
+    }
 ];
 
 new Vue({
