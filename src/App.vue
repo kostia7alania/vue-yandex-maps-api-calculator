@@ -270,9 +270,10 @@
         var min_cost = this.tarifs[this.selected].min_cost
         var deliv_tarif_km = this.tarifs[this.selected].deliv_tarif_km
 
-        if(this.tarifs[this.selected].id == 11 ){// под перегонщиkа ))
+        if(this.tarifs[this.selected].id > 10 ){// под перегонщиkа ))
           this.tudaobratno = 0; //тока в одну сторону) типа в обе стороны - дешевле вызывать обычное такси)% ну - пока так) а вообще. челу может надо нескоких доставить в пару точек)  но пока тока реализовано в одну)
-          if( (this.distance_val / 1000) <=3 ){//3km
+          if( ( (this.distance_val / 1000) <=3 ) && 
+                (this.tarifs[this.selected].id == 11) ){//3km (чисто под перегонщика! эвакуаторы в ЭЛС идут!)
             this.custom_price = this.price = min_cost;
           }else{
             var cost_km = Math.round(((this.distance_val / 1000) -3) * deliv_tarif_km + min_cost);//-3km + min_cost
