@@ -5,33 +5,16 @@
       <b-form-group label="Вариант аренды:">
         <b-form-radio-group v-model="var_arendy_selected" :options="var_arendy" name="radioInline"> </b-form-radio-group>
       </b-form-group>
-  
-  
-      <h3>Выберите транспорт:</h3>
-      <v-select v-model="selected_obj" :on-change="selectCarHandler" :searchable="false" :options="tarifs" label="title">
-        <span slot="no-options">Нет результатов... </span>
-        <template slot="option" slot-scope="option">
-                      <b-row  class="justify-content-md-center">
-                          <b-col><b-badge pill variant="success">{{ option.title }}</b-badge>
-                            <span style="font-weight:555" class="fa fa-male fa-1x" v-if="option.mesta>0"> 
-                               {{option.mesta}} </span> </b-col>
-                          <b-col>{{ option.desc }} <span  v-if="option.mesta>0" >и подобные</span></b-col>
-                          <b-col  cols="12" md="auto">от {{ option.min_cost }}
-                            <i class="fa fa-ruble-sign" aria-hidden="true"></i>
-                          </b-col>
-                        <b-col cols="12" md="auto"><b-img slot="aside" :src="option.icon" width="100" alt="Фото транспорта" /></b-col>
-                      </b-row>
-</template>
-      </v-select>
 
-
+    <Autos :tarifs="tarifs" @select-car-handler="selectCarHandler"></Autos>
+   
     <div v-show="var_arendy_selected == 'standart' ">
 
       <div v-if=" (tarifs[selected].mesta>0) && (var_arendy_selected == 'standart') ">
         <h3>Количество пассажиров:</h3>
         <div class="row  justify-content-md-center">
           <div class="col col-lg-6 center">
-            <vue-slider v-model="passagers" :min=0 :max="max_sit" v-bind="opts"></vue-slider>
+            <vue-slider v-model="passagers" :min=0 :max="tarifs[selected].mesta" v-bind="opts"></vue-slider>
           </div>
         </div>
       </div>
@@ -43,38 +26,35 @@
 
 <br>
   <div v-show="distance_val"> 
-  <div class="row col">
-    <div class="col-md-4"> <b-alert show variant="danger"><i class="fa fa-road" aria-hidden="true"></i> {{distance_text}}  </b-alert></div>
-    <div class="col-md-4">  <b-alert show variant="danger"> <b><i class="fa fa-clock" aria-hidden="true"></i></b> {{dispClock}} </b-alert></div>
-    <div class="col-md-4">  <b-alert show variant="danger"><i class="fas fa-tachometer-alt"></i> {{dispSpeed}} км/ч </b-alert></div>
- </div>
+    <div class="row col">
+      <div class="col-md-4"> <b-alert show variant="danger"><i class="fa fa-road" aria-hidden="true"></i> {{distance_text}}  </b-alert></div>
+      <div class="col-md-4">  <b-alert show variant="danger"> <b><i class="fa fa-clock" aria-hidden="true"></i></b> {{dispClock}} </b-alert></div>
+      <div class="col-md-4">  <b-alert show variant="danger"><i class="fas fa-tachometer-alt"></i> {{dispSpeed}} км/ч </b-alert></div>
+  </div>
  
  <div class="row">
-  <div class="col-xl-12">
-    <br>
-      <!--
-        <b>Откуда:</b> {{firstGeoObject}}<br>
-        <b>Куда:</b> {{secontGeoObject}}<br>
-      -->
+    <div class="col-xl-12">
+      <br>
+      <!--<b>Откуда:</b> {{firstGeoObject}}<br>
+        <b>Куда:</b> {{secontGeoObject}}<br> -->
       <!-- Посмотреть на сайте <a target="_blank" :href="'https://yandex.ru/maps?mode=routes&rtext='+x1+'%2C'+y1+'~'+x2+'%2C'+y2">Яндекс карты</a> -->
  
-     <b-form-checkbox v-show=" tarifs[selected].id<11 " id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">При поездке >100 км - скидки до 50%</b-badge> <b-badge pill variant="primary"> и бесплатное ожидание - до 4х часов</b-badge></b-form-checkbox>
+     <b-form-checkbox v-show="tarifs[selected].id<11 " id="checkboxes1" name="tudaobratn" @change="tudaobratnoHandler"> Туда и обратно  <b-badge pill variant="success">При поездке >100 км - скидки до 50%</b-badge> <b-badge pill variant="primary"> и бесплатное ожидание - до 4х часов</b-badge></b-form-checkbox>
 
-    <h1> Примерная стоимость:
-    {{tudaobratno>0?(price/1.50) + " + " + (price-price/1.50) + " = " +price : price }}
-    <i class="fa fa-ruble-sign"></i>
-    </h1>
- 
+      <Price :tudaobratno='tudaobratno' :price="price"></Price>
+
       <div class="row  justify-content-md-center">
         <div class="col col-lg-6 col-xs-12">
           <b-form-checkbox v-model="custom_price_checked"> Предложить свою цену </b-form-checkbox>
-          <div v-show="custom_price_checked"> <input v-model="custom_price" class="form-control" type="tel" v-mask="'######'" placeholder="_____"></input> </div>
+          <div v-show="custom_price_checked"> 
+              <input v-model="custom_price" class="form-control" type="tel" v-mask="'######'" placeholder="_____"></input> 
+          </div>
         </div>
       </div>
+    </div>
+  </div>
  </div>
-  </div>
-   </div>
-  </div>
+</div>
   <hr>
   <div>
   <div>
@@ -88,7 +68,7 @@
  
 <br>
     <div v-show="var_arendy_selected=='standart'">
-      <b-btn v-b-toggle.collapse2 variant="default">Выбрать дату</b-btn>
+      <b-btn v-b-toggle.collapse2 variant="outline-info">Выбрать дату</b-btn>
       <b-collapse id="collapse2" class="mt-2">
           <b-container>
             <b-row class="my-1">
@@ -99,23 +79,24 @@
       </b-collapse>
     </div>
     <div v-show="var_arendy_selected!='standart'">
-      <b-btn v-b-toggle.collapse2 variant="default">Выбрать даты</b-btn>
+              <b-col sm="12">Сколько часов будет аренда:   <br>
+                  <b-form-select @change="price_arenda_handler" v-model="arenda_time_sel" :options="arenda_time" class="mb-3" />
+              </b-col>
+
+      <b-btn v-b-toggle.collapse2 variant="outline-info">Выбрать даты</b-btn>
       <b-collapse id="collapse2" class="mt-2">
           <b-container>
             <b-row> 
-              <b-col sm="3">Дата начала аренды:<b-form-input type="date"  v-model="go_to_date"></b-form-input></b-col>
-              <b-col sm="3">Время начала аренды:<b-form-input type="time"  v-model="go_to_time"></b-form-input></b-col>
-              
-              <b-col sm="3">Дата окончания аренды:<b-form-input type="date"  v-model="go_to_date_arenda_end"></b-form-input></b-col>
-              <b-col sm="3">Время окончания аренды:<b-form-input type="time"  v-model="go_to_time_arenda_end"></b-form-input></b-col>
-            </b-row>
+              <b-col sm="6">Дата начала аренды:<b-form-input type="date"  v-model="go_to_date"></b-form-input></b-col>
+              <b-col sm="6">Время начала аренды:<b-form-input type="time"  v-model="go_to_time"></b-form-input></b-col>
+             </b-row>
           </b-container>
       </b-collapse> 
     </div>
     <br>
 
     <div>
-      <b-btn v-b-toggle.collapse1 variant="default">Добавить пожелания</b-btn>
+      <b-btn v-b-toggle.collapse1 variant="outline-info">Добавить пожелания</b-btn>
       <b-collapse id="collapse1" class="mt-2">
         <b-form-textarea v-model="comment"
                         placeholder="Ваши пожелания, нюансы, будут-ли дети (нужны-ли детские кресла)..."
@@ -127,7 +108,7 @@
 
     <br>
     <div class="text-center">
-      <b-btn @click="zakazat" @hover="show_toltip=!show_toltip" id="tooltipButton-1" variant="outline-success">Заказать 
+      <b-btn @click="zakazat" @hover="show_toltip=!show_toltip" id="tooltipButton-1" variant="outline-danger">Заказать 
         <span v-if="var_arendy_selected=='standart'">трансфер</span>
         <span v-else>автомобиль</span>
         </b-btn>
@@ -146,17 +127,46 @@
 </template>
 
 <script>
+  import Autos from './Autos';
+  import Price from './Price';
   import vueSlider from 'vue-slider-component';
   export default {
     components: {
-      vueSlider
+      vueSlider, Autos, Price
     },
     props: ['tarifs'],
     data() {
       return {
-        show_toltip:false,
-        custom_price_checked:0,
-        custom_price:'',
+        price_arenda: 0,
+        arenda_time_sel: 0,
+        arenda_time: [
+          {text:"Выберите", value: 0},
+          {text:'3 часа', value:3}, 
+          {text:'4 часа', value:4}, 
+          {text:'5 часа', value:5}, 
+          {text:'6 часа', value:6}, 
+          {text:'7 часа', value:7}, 
+          {text:'8 часа', value:8}, 
+          {text:'9 часа', value:9}, 
+          {text:'10 часа', value:10}, 
+          {text:'11 часа', value:11}, 
+          {text:'12 часа', value:12}, 
+          {text:'13 часа', value:13}, 
+          {text:'14 часа', value:14}, 
+          {text:'15 часа', value:15}, 
+          {text:'16 часа', value:16}, 
+          {text:'17 часа', value:17}, 
+          {text:'18 часа', value:18}, 
+          {text:'19 часа', value:19}, 
+          {text:'20 часа', value:20}, 
+          {text:'21 часа', value:21}, 
+          {text:'22 часа', value:22}, 
+          {text:'23 часа', value:23}, 
+          {text:'24 часа', value:24}
+        ],
+        show_toltip: false,
+        custom_price_checked: 0,
+        custom_price: '',
         var_arendy_selected: 'standart',
         var_arendy: [{
             text: 'Трансфер',
@@ -188,10 +198,8 @@
         placeholder: '23:45',
         tudaobratno: 0,
         tel: '',
-        selected: 0,
-        selected_obj: {},
+        selected: 0, 
         passagers: 1,
-        max_sit: 4,
         price: 0,
         distance_val: '',
         durationInTraffic_val: '',
@@ -216,7 +224,6 @@
     mounted() {
       window.v = this;
       console.log('ya_init()=====>', ya_init())
-      this.selected_obj = tarifs[this.selected]
     },
     computed: {
       dispSpeed() {
@@ -245,7 +252,12 @@
       }
     },
     methods: {
-      call_me(){        alert('\nПерезвон! \nВОТ ТЕБЕ ВСЯ СОБРАННАЯ ИНФА по заказу =>>>\n\n (это все надо терь апрокинуть тебе в ворпресс)\n\n' + JSON.stringify(this.$data))
+  
+      price_arenda_handler() {
+        this.price_arenda = this.arenda_time_sel * this.tarifs[this.selected].arenda_tarif
+      },
+      call_me() {
+        alert('\nПерезвон! \nВОТ ТЕБЕ ВСЯ СОБРАННАЯ ИНФА по заказу =>>>\n\n (это все надо терь апрокинуть тебе в ворпресс)\n\n' + JSON.stringify(this.$data))
       },
       zakazat() {
         alert('\n ! ! !! ! ВОТ ТЕБЕ ВСЯ СОБРАННАЯ ИНФА по заказу =>>>\n\n (это все надо терь апрокинуть тебе в ворпресс)\n\n' + JSON.stringify(this.$data))
@@ -263,29 +275,32 @@
         console.log('this.selected=>', this.selected);
         this.calculate_cost();
         console.log(1111111111111);
-        this.max_sit = this.tarifs[this.selected].mesta
         this.passagers = this.passagers > this.tarifs[this.selected].mesta ? this.tarifs[this.selected].mesta : this.passagers;
       },
-      calculate_cost() {   
+      calculate_cost() {
         var min_cost = this.tarifs[this.selected].min_cost
         var deliv_tarif_km = this.tarifs[this.selected].deliv_tarif_km
-
-        if(this.tarifs[this.selected].id > 10 ){// под перегонщиkа ))
-          this.tudaobratno = 0; //тока в одну сторону) типа в обе стороны - дешевле вызывать обычное такси)% ну - пока так) а вообще. челу может надо нескоких доставить в пару точек)  но пока тока реализовано в одну)
-          if( ( (this.distance_val / 1000) <=3 ) && 
-                (this.tarifs[this.selected].id == 11) ){//3km (чисто под перегонщика! эвакуаторы в ЭЛС идут!)
+  
+  
+        if (this.tarifs[this.selected].id > 10) {
+          this.tudaobratno = 0;
+        } //тока в одну сторону) типа в обе стороны - дешевле вызывать обычное такси)% ну - пока так) а вообще. челу может надо нескоких доставить в пару точек)  но пока тока реализовано в одну)
+  
+        if (this.tarifs[this.selected].id == 11) { // под перегонщиkа ))
+          if (((this.distance_val / 1000) <= 3) &&
+            (this.tarifs[this.selected].id == 11)) { //3km (чисто под перегонщика! эвакуаторы в ЭЛС идут!)
             this.custom_price = this.price = min_cost;
-          }else{
-            var cost_km = Math.round(((this.distance_val / 1000) -3) * deliv_tarif_km + min_cost);//-3km + min_cost
+          } else {
+            var cost_km = Math.round(((this.distance_val / 1000) - 3) * deliv_tarif_km + min_cost); //-3km + min_cost
             this.custom_price = this.price = cost_km;
           }
-
-        }  else {
+  
+        } else {
           //var deliv_tarif_mins = this.tarifs[this.selected].deliv_tarif_mins
           var cost_km = Math.round((this.distance_val / 1000) * deliv_tarif_km);
           //var cost_mins = Math.round((this.duration_val / 60) * deliv_tarif_mins);
-          this.price = Math.max(cost_km,/*cost_mins,*/ min_cost);
-          this.price = this.tudaobratno == 1 ? ( this.price / 2 + this.price ) : this.price;
+          this.price = Math.max(cost_km, /*cost_mins,*/ min_cost);
+          this.price = this.tudaobratno == 1 ? (this.price / 2 + this.price) : this.price;
           this.custom_price = this.price;
         }
       }
@@ -399,10 +414,11 @@
     padding: 0;
     margin: 0;
   }
-
-
-
-  input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"] {
+  
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"] {
     color: black;
-}
+  }
 </style>

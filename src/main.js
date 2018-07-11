@@ -6,12 +6,8 @@ import BootstrapVue from 'bootstrap-vue'; Vue.use(BootstrapVue); import 'bootstr
  //import './api-yandex-maps.js' //lagS!!
  import './script_ya.js'
 import VueMask from 'v-mask'; Vue.use(VueMask);
-
 import vSelect from 'vue-select'; Vue.component('v-select', vSelect)
-
-
 import App from './App.vue'
-
 
 window.tarifs = [
   {
@@ -22,7 +18,8 @@ window.tarifs = [
     mesta: 4,
     min_cost: 2000, //минималка в рублях
     deliv_tarif_km: 40, //стоимость 1 км
-    deliv_tarif_mins: 2 //стоимость 1 мин
+    arenda_min: 4000, //минималка аренды
+    arenda_tarif: 1400 //  аренда за 1 час 
   },
   {
     id: 1,
@@ -32,7 +29,8 @@ window.tarifs = [
     mesta: 3,
     min_cost: 5000, //минималка в рублях
     deliv_tarif_km: 75, //стоимость 1 км
-    deliv_tarif_mins: 3 //стоимость 1 мин
+    arenda_min: 5000, //минималка аренды
+    arenda_tarif: 2200 //  аренда за 1 час
   },
   {
     id: 2,
@@ -42,7 +40,8 @@ window.tarifs = [
     mesta: 8,
     min_cost: 3000, //минималка в рублях
     deliv_tarif_km: 38, //стоимость 1 км
-    deliv_tarif_mins: 1 //стоимость 1 мин
+    arenda_min: 4000, //минималка аренды
+    arenda_tarif: 1300 //  аренда за 1 час
   },
   {
     id: 3,
@@ -52,7 +51,8 @@ window.tarifs = [
     mesta: 7,
     min_cost: 4000, //минималка в рублях
     deliv_tarif_km: 52, //стоимость 1 км
-    deliv_tarif_mins: 3 //стоимость 1 мин
+    arenda_min: 5000, //минималка аренды
+    arenda_tarif: 1700 //  аренда за 1 час
   },
   {
     id: 4,
@@ -62,7 +62,8 @@ window.tarifs = [
     mesta: 6,
     min_cost: 6000, //минималка в рублях
     deliv_tarif_km: 77, //стоимость 1 км
-    deliv_tarif_mins: 4 //стоимость 1 мин
+    arenda_min: 6000, //минималка аренды
+    arenda_tarif: 2500 //  аренда за 1 час
   },
   {
     id: 5,
@@ -72,7 +73,8 @@ window.tarifs = [
     mesta: 16,
     min_cost: 5000, //минималка в рублях
     deliv_tarif_km: 58, //стоимость 1 км
-    deliv_tarif_mins: 2 //стоимость 1 мин
+    arenda_min: 5000, //минималка аренды
+    arenda_tarif: 1200 //  аренда за 1 час
   },
   {
     id: 6,
@@ -82,7 +84,8 @@ window.tarifs = [
     mesta: 21,
     min_cost: 5000, //минималка в рублях
     deliv_tarif_km: 63, //стоимость 1 км
-    deliv_tarif_mins: 2 //стоимость 1 мин
+    arenda_min: 5000, //минималка аренды
+    arenda_tarif: 1500 //  аренда за 1 час
   },
   {
     id: 7,
@@ -92,7 +95,8 @@ window.tarifs = [
     mesta: 21,
     min_cost: 5000, //минималка в рублях
     deliv_tarif_km: 74, //стоимость 1 км
-    deliv_tarif_mins: 2 //стоимость 1 мин
+    arenda_min: 5000, //минималка аренды
+    arenda_tarif: 1800 //  аренда за 1 час
   },
   {
     id: 8,
@@ -102,7 +106,8 @@ window.tarifs = [
     mesta: 19,
     min_cost: 4000, //минималка в рублях
     deliv_tarif_km: 58, //стоимость 1 км
-    deliv_tarif_mins: 2 //стоимость 1 мин
+    arenda_min: 4000, //минималка аренды
+    arenda_tarif: 1100 //  аренда за 1 час
   },
   {
     id: 9,
@@ -112,7 +117,8 @@ window.tarifs = [
     mesta: 44,
     min_cost: 7000, //минималка в рублях
     deliv_tarif_km: 93, //стоимость 1 км
-    deliv_tarif_mins: 2 //стоимость 1 мин
+    arenda_min: 7000, //минималка аренды
+    arenda_tarif: 1500 //  аренда за 1 час
   },
   {
     id: 10,
@@ -122,7 +128,8 @@ window.tarifs = [
     mesta: 50,
     min_cost: 8000, //минималка в рублях
     deliv_tarif_km: 132, //стоимость 1 км
-    deliv_tarif_mins: 2 //стоимость 1 мин
+    arenda_min: 8000, //минималка аренды
+    arenda_tarif: 2000 //  аренда за 1 час
   },
   {
     id: 11,
@@ -132,27 +139,28 @@ window.tarifs = [
     mesta: "",
     min_cost: 800, //минималка в рублях
     deliv_tarif_km: 55, //стоимость 1 км
-    deliv_tarif_mins: 2 //стоимость 1 мин
+    arenda_min: 3000, //минималка аренды
+    arenda_tarif: 1000 //  аренда за 1 час
   },{
     id: 12,
-    title: 'Перевозка авто до 1,5 тонн на эвакуаторе',
+    title: 'Услуги эвакуатора (Перевозка авто до 1,5 тонн)', 
     icon: './src/img/evakuator.jpg',
     desc: 'Наш водитель на эвакуаторе погрузит и перевезёт ваш автомобиль',
-    desc_cost: '6 000 р.',
-    mesta: 3,
+    mesta: 2,
     min_cost: 6000,
     deliv_tarif_km: 59, //стоимость 1 км
-    deliv_tarif_mins: 1 //стоимость 1 мин
+    arenda_min: 6000, //минималка аренды
+    arenda_tarif: 1200 //  аренда за 1 час
     },{
     id: 13,
-    title: 'Перевозка авто до 3 тонн на эвакуаторе',
+    title: 'Услуги эвакуатора (Перевозка авто до 3 тонн)', 
     icon: './src/img/evakuator3.jpg',
     desc: 'Наш водитель на эвакуаторе погрузит и перевезёт ваш автомобиль',
-    desc_cost: '6 000 р.',
-    mesta: 3,
+    mesta: 2,
     min_cost: 7000,
     deliv_tarif_km: 68, //стоимость 1 км
-    deliv_tarif_mins: 1 //стоимость 1 мин
+    arenda_min: 7000, //минималка аренды
+    arenda_tarif: 1500 //  аренда за 1 час
     }
 ];
 
